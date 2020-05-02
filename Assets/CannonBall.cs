@@ -11,14 +11,14 @@ public class CannonBall : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        print(transform.rotation.eulerAngles);
-        Vector3 firingDirection = Quaternion.Euler(transform.rotation.eulerAngles) * Vector3.forward;
+        Vector3 firingDirection = Quaternion.Euler(transform.rotation.eulerAngles) * Vector3.back;
         rigidbody.AddForce(firingDirection * cannonBallFiringForce);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        Collider collider = GetComponent<SphereCollider>();
+        collider.enabled = false;
+        print("Cannon Ball collider disabled");
     }
 }
