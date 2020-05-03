@@ -12,11 +12,11 @@ public class CardHitController : MonoBehaviour
     [SerializeField] int timeGainedForPair = 1;
     [Space]
     [SerializeField] public bool oneCardHit = false; // make private
-    [SerializeField] private int lastCardNumber = -1; // make private
-    [SerializeField] GameObject lastCardObject; // make private
-
-    private int currentCardNumber = -1;
-    GameObject currentCardObject;
+    [SerializeField] public int firstCardNumber = -1; // make private
+    [SerializeField] public GameObject firstCardObject; // make private
+    [Space]
+    public int secondCardNumber = -1; // make private
+    public GameObject secondCardObject; // make private
     public bool areCardHitsAllowed = false;
 
     public void cardHit(GameObject card)
@@ -37,60 +37,59 @@ public class CardHitController : MonoBehaviour
     private void SetOneCardHit(GameObject card)
     {
         oneCardHit = true;
-        lastCardObject = card;
-        lastCardNumber = card.GetComponent<Card>().cardValue;
+        firstCardObject = card;
+        firstCardNumber = card.GetComponent<Card>().cardValue;
+        card.GetComponent<Card>().isHit=true;
         cardMovementController.RotateCard180(card);
     }
 
     private void ProcessSecondCardHit(GameObject card)
     {
-        areCardHitsAllowed = false;
-        currentCardObject = card;
-        currentCardNumber = card.GetComponent<Card>().cardValue;
-
-        if (lastCardNumber == currentCardNumber && lastCardObject != currentCardObject)
+        if (!card.GetComponent<Card>().isHit)
         {
-            StartCoroutine(PairMatchedCorrectly());
+            areCardHitsAllowed = false;
+            secondCardObject = card;
+            secondCardNumber = card.GetComponent<Card>().cardValue;
+            card.GetComponent<Card>().isHit = true;
+
+            bool matchingpair = (firstCardNumber == secondCardNumber && firstCardObject != secondCardObject);
+            StartCoroutine(PairMatched(matchingpair));
+        }
+    }
+
+    IEnumerator PairMatched(bool correct)
+    {
+        cardMovementController.RotateCard180(secondCardObject);
+        if (correct)
+        {
+            gameController.TimeGained(timeGainedForPair);
         }
         else
         {
-            gameController.TimeGained(-1);
-            StartCoroutine(ResetCards());
+            gameController.TimeGained(-timeGainedForPair);
         }
-    }
-
-    IEnumerator PairMatchedCorrectly()
-    {
-        cardMovementController.RotateCard180(currentCardObject);
-        gameController.TimeGained(timeGainedForPair);
-        yield return new WaitForSeconds(cardShowTime);
-        currentCardObject.SetActive(false);
-        lastCardObject.SetActive(false);
-        cardMovementController.RotateCard180(currentCardObject);
-        cardMovementController.RotateCard180(lastCardObject);
-        oneCardHit = false;
-        areCardHitsAllowed = true;
-        lastCardNumber = -1;
-        lastCardObject = null;
-        RunFinalPairCheck();
-    }
-
-    IEnumerator ResetCards()
-    {
-        cardMovementController.RotateCard180(currentCardObject);
-
         yield return new WaitForSeconds(cardShowTime);
 
-        lastCardNumber = -1;
-        cardMovementController.RotateCard180(lastCardObject);
-        lastCardObject = null;
-
-        currentCardNumber = -1;
-        cardMovementController.RotateCard180(currentCardObject);
-        currentCardObject = null;
+        if (correct)
+        {
+            secondCardObject.SetActive(false);
+            firstCardObject.SetActive(false);
+        }
 
         oneCardHit = false;
         areCardHitsAllowed = true;
+        ResetCard(firstCardObject);
+        firstCardNumber = -1;
+        firstCardObject = null;
+
+        ResetCard(secondCardObject);
+        secondCardNumber = -1;
+        secondCardObject = null;
+
+        if (correct)
+        {
+            RunFinalPairCheck();
+        }
     }
 
     private void RunFinalPairCheck()
@@ -114,18 +113,21 @@ public class CardHitController : MonoBehaviour
     public void MoveToNextLevel()
     {
         areCardHitsAllowed = false;
-        ResetOneCard();
         StartCoroutine(gameController.MoveToNextLevel());
     }
 
-    public void ResetOneCard()
+    public void ResetCard(GameObject card)
     {
-        if (oneCardHit)
-        {
-            lastCardNumber = -1;
-            cardMovementController.RotateCard180(lastCardObject);
-            lastCardObject = null;
-            oneCardHit = false;
-        }
+        card.GetComponent<Card>().isHit = false;
+        cardMovementController.RotateCard180(card);
+    }
+
+    public void ResetVariables()
+    {
+        firstCardNumber = -1;
+        firstCardObject = null;
+        secondCardNumber = -1;
+        secondCardObject = null;
+        oneCardHit = false;
     }
 }

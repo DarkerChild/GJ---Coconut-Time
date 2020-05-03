@@ -88,7 +88,7 @@ public class CardSetup : MonoBehaviour
         {
             cardMovementController.RotateCard180(card.gameObject);
         }
-        yield return new WaitForSeconds(cardMovementController.cardSpinTime/1000f + 0.5f);
+        yield return new WaitForSeconds(cardMovementController.cardSpinTime);
         cardHitController.areCardHitsAllowed = true;
         gameController.isTimerActive = true;
     }
@@ -106,12 +106,28 @@ public class CardSetup : MonoBehaviour
         colours.Add(Colours.PinkTetradic, new Color(.729f, .278f, .545f));
     }
 
-    public void ResetCards()
+    public IEnumerator GameEndCardShowAndReset()
     {
-        cardHitController.ResetOneCard();
+        yield return new WaitForSeconds(timeToShowCardsOnNewLevel);
+        foreach (Card card in allCards)
+        {
+            if (card.GetComponent<Card>().isHit == false)
+            {
+                cardMovementController.RotateCard180(card.gameObject);
+            }
+        }
+        yield return new WaitForSeconds(timeToShowCardsOnNewLevel);
+        foreach (Card card in allCards)
+        {
+            cardMovementController.RotateCard180(card.gameObject);
+            card.GetComponent<Card>().isHit = false;
+        }
+        yield return new WaitForSeconds(timeToShowCardsOnNewLevel);
         foreach (Card card in allCards)
         {
             card.gameObject.SetActive(true);
         }
+        cardHitController.ResetVariables();
+        gameController.SetButtonsActive(true);
     }
 }

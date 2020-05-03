@@ -8,6 +8,7 @@ public class Card : MonoBehaviour
 {
     public Difficulty cardDiffictulty;
     public int cardValue;
+    public bool isHit = false;
 
     CardHitController cardHitController;
 

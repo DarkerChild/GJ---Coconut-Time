@@ -30,8 +30,21 @@ public class GameController : MonoBehaviour
         cardHitController = FindObjectOfType<CardHitController>();
     }
 
-    public void StartNewGame()
+    public void StartNewGame(int difficulty)
     {
+        switch (difficulty)
+        {
+            case 0:
+                currentDifficulty = Difficulty.Easy;
+                break;
+            case 1:
+                currentDifficulty = Difficulty.Medium;
+                break;
+            case 2:
+                currentDifficulty = Difficulty.Hard;
+                break;
+        }
+        SetButtonsActive(false);
         StopAllCoroutines();
         StartCoroutine(SetGameActive());
         cardSetup.StartLevel();
@@ -60,11 +73,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void GameLost()
-    {
-        isGameActive = false;
-        cardSetup.ResetCards();
-    }
+
 
     public void TimeGained(int timeGained)
     {
@@ -86,6 +95,12 @@ public class GameController : MonoBehaviour
         timerText.text = timeRemaining.ToString();
     }
 
+    private void GameLost()
+    {
+        isGameActive = false;
+        StartCoroutine(cardSetup.GameEndCardShowAndReset());
+    }
+
     public IEnumerator MoveToNextLevel()
     {
         currentLevel++;
@@ -94,5 +109,15 @@ public class GameController : MonoBehaviour
         isTimerActive = false;
         yield return new WaitForSeconds(cardHitController.cardShowTime * 2);
         cardSetup.StartLevel();
+    }
+
+    public void SetButtonsActive(bool isActive)
+    {
+        Button[] buttons = FindObjectsOfType<Button>();
+
+        foreach (Button button in buttons)
+        {
+            button.interactable = isActive;
+        }
     }
 }
