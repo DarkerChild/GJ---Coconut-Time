@@ -7,25 +7,39 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour
 {
     public GameObject textObject;
-    public CardController.Difficulty cardDiffictulty;
+    public Difficulty cardDiffictulty;
     public int cardValue;
 
-    CardController cardController;
-    
+    //CardSetup cardSetup;
+    CardHitController cardHitController;
+    GameController gameController;
+
+    public bool isHit = false;
+
+    private Quaternion startingRot;
+    private Quaternion hitRot;
+    private Quaternion currRot;
+
+    private float cardSpinTime;
+
     private void Start()
     {
-        cardController = FindObjectOfType<CardController>();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        print(gameObject.name + "hit trigger by " + other.name);
-        cardController.cardHit(gameObject);
+        cardHitController = FindObjectOfType<CardHitController>();
+        gameController = FindObjectOfType<GameController>();
+        startingRot = transform.rotation;
+        float startX = startingRot.eulerAngles.x;
+        float startY = startingRot.eulerAngles.y;
+        float startZ = startingRot.eulerAngles.z;
+        hitRot = Quaternion.Euler(startX, startY + 180f, startZ);
+        cardSpinTime = cardHitController.cardSpinTime;
     }
 
     private void OnMouseDown()
     {
-        cardController.cardHit(gameObject);
+        if (cardHitController.areCardHitsAllowed)
+        {
+            cardHitController.cardHit(gameObject);
+        }
     }
     
     public void SetCardValue(int newValue)
