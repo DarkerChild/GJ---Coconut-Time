@@ -26,7 +26,7 @@ public class Cannon : MonoBehaviour
     private void Update()
     {
         AimCannonAtMouse();
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             FireCannonBall();
             PlayParticleFX();
@@ -51,24 +51,10 @@ public class Cannon : MonoBehaviour
 
     private void AimCannonAtMouse() 
     {
-        /*
-        Vector3 mousePositionWorldSpace = camera.ScreenToWorldPoint(Input.mousePosition + -camera.transform.forward);
-        Vector3 pointOfInterest = mousePositionWorldSpace + camera.transform.forward * depthOffset;
-        Vector3 direction = (pointOfInterest - transform.position)*-1f;
-        transform.rotation = Quaternion.LookRotation(direction);
-        
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z += depthOffset;
-        Vector3 direction = camera.ScreenToWorldPoint(mousePos);
-        transform.rotation = Quaternion.LookRotation(-direction);
-        */
-
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         Vector3 targetPosition = ray.GetPoint(4.5f);
-        Debug.DrawRay(ray.origin, ray.direction * 4.5f, Color.yellow);
-        //print("TP : " + targetPosition);
-        transform.rotation = Quaternion.LookRotation(targetPosition);
+        Vector3 targetDirection = targetPosition - transform.position;
+        targetDirection = -targetDirection.normalized;
+        transform.rotation = (Quaternion.LookRotation(targetDirection));
     }
 }
-
-//4.417 , 1.315, 4.527
