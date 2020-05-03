@@ -14,68 +14,85 @@ public class GameController : MonoBehaviour
     [SerializeField] float gameStartDelay;
     
     public bool isGameActive = false;
+    public bool isTimerActive = false;
 
     public int currentLevel = 0;
     private int timeRemaining;
-    CardSetup CardSetup;
+    CardSetup cardSetup;
+    CardHitController cardHitController;
 
-    
+
     public Difficulty currentDifficulty = Difficulty.Easy;
 
     private void Start()
     {
-        CardSetup = FindObjectOfType<CardSetup>();
+        cardSetup = FindObjectOfType<CardSetup>();
+        cardHitController = FindObjectOfType<CardHitController>();
     }
 
     public void StartNewGame()
     {
-        isGameActive = false;
+        StopAllCoroutines();
+        StartCoroutine(SetGameActive());
+        cardSetup.StartLevel();
+    }
+
+    IEnumerator SetGameActive()
+    {
+        isGameActive = true;
         currentLevel = 1;
         timeRemaining = startingTime;
-        StopAllCoroutines();
-        StartCoroutine(SetGameActive(gameStartDelay));
-        CardSetup.StartLevel();
-    }
-
-    IEnumerator SetGameActive(float startDelay)
-    {
-        while (!isGameActive)
+        timerText.text = timeRemaining.ToString();
+        yield return new WaitForSeconds(gameStartDelay);
+        
+        while (isGameActive)
         {
-            timerText.text = timeRemaining.ToString();
-            yield return new WaitForSeconds(startDelay);
-            isGameActive = true;
+            while (isTimerActive)
+            {
+                if (timeRemaining > startingTime) timeRemaining = startingTime;
+                if (isGameActive)
+                {
+                    TimeGained(-1);
+                }
+                yield return new WaitForSeconds(1f);
+            }
+            while (!isTimerActive) yield return new WaitForSeconds(1f);
         }
-        StartCoroutine(GameTimerControler());
-    }
-
-    IEnumerator GameTimerControler()
-    {
-        while (timeRemaining>=0)
-        {
-            if (timeRemaining > startingTime) timeRemaining = startingTime;
-            timerText.text = timeRemaining.ToString();
-            timeRemaining--;
-            yield return new WaitForSeconds(1f);
-        }
-        GameLost();
     }
 
     private void GameLost()
     {
         isGameActive = false;
-        print("Game Lost");
+        cardSetup.ResetCards();
     }
 
     public void TimeGained(int timeGained)
     {
-        timeRemaining += timeGained;
+        int newTimeRemaining = timeRemaining + timeGained;
+        if (newTimeRemaining <= 0)
+        {
+            timeRemaining = 0;
+            GameLost();
+        }
+        else if (newTimeRemaining < startingTime)
+        {
+            timeRemaining += timeGained;
+            
+        }
+        else
+        {
+            timeRemaining = startingTime;
+        }
         timerText.text = timeRemaining.ToString();
     }
 
-    public void MoveToNextLevel()
+    public IEnumerator MoveToNextLevel()
     {
         currentLevel++;
-        print("Adding: " + (startingTime - ((currentLevel < startingTime) ? currentLevel : 0)).ToString());
-        timeRemaining += startingTime - ((currentLevel<startingTime)? currentLevel:0) ;
+        int newTimeGained = currentLevel < startingTime ? (startingTime - currentLevel) : 0;
+        if (newTimeGained > 0 ) TimeGained(newTimeGained);
+        isTimerActive = false;
+        yield return new WaitForSeconds(cardHitController.cardShowTime * 2);
+        cardSetup.StartLevel();
     }
 }
