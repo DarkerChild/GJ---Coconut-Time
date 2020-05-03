@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardHitController : MonoBehaviour
 {
-    [SerializeField] GameController gameController;
+    [SerializeField] InGameController gameController;
     [SerializeField] CardSetup cardSetup;
     [SerializeField] CardMovementController cardMovementController;
     [Space]

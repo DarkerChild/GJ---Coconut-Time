@@ -12,13 +12,13 @@ public class CardSetup : MonoBehaviour
     Card[] allCards;
     List<Card> activeCards = new List<Card>();
 
-    GameController gameController;
+    InGameController gameController;
     CardHitController cardHitController;
     CardMovementController cardMovementController;
 
     private void Start()
     {
-        gameController = FindObjectOfType<GameController>();
+        gameController = FindObjectOfType<InGameController>();
         cardHitController = FindObjectOfType<CardHitController>();
         cardMovementController = FindObjectOfType<CardMovementController>();
         allCards = FindObjectsOfType<Card>();

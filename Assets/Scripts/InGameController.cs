@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public enum Difficulty { Easy, Medium, Hard };
 
-public class GameController : MonoBehaviour
+public class InGameController : MonoBehaviour
 {
     
     [SerializeField] Text timerText;
@@ -20,13 +20,21 @@ public class GameController : MonoBehaviour
     private int timeRemaining;
     CardSetup cardSetup;
     CardHitController cardHitController;
+    GameManager gameState;
+    [SerializeField] GameObject inGameCanvas = null;
 
     public Difficulty currentDifficulty = Difficulty.Easy;
 
     private void Start()
     {
+        gameState = FindObjectOfType<GameManager>();
         cardSetup = FindObjectOfType<CardSetup>();
         cardHitController = FindObjectOfType<CardHitController>();
+    }
+
+    public void SetIsStarting()
+    {
+        inGameCanvas.SetActive(true);
     }
 
     public void StartNewGame(int difficulty)
@@ -71,8 +79,6 @@ public class GameController : MonoBehaviour
             while (!isTimerActive) yield return new WaitForSeconds(1f);
         }
     }
-
-
 
     public void TimeGained(int timeGained)
     {

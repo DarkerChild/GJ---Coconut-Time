@@ -16,9 +16,9 @@ public class CannonBall : MonoBehaviour
         rigidbody.AddForce(firingDirection * cannon.cannonFireingForce);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         Collider collider = GetComponent<SphereCollider>();
-        //collider.enabled = false;
+        collider.enabled = false;
     }
 }

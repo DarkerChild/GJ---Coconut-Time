@@ -29,7 +29,16 @@ public class Cannon : MonoBehaviour
             FireCannonBall();
             PlayParticleFX();
         }
-        
+    }
+
+    private void AimCannonAtMouse()
+    {
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        Vector3 targetPosition = ray.GetPoint(4.5f);
+        targetPosition = targetPosition + new Vector3(0f, 0.1f, 0f);
+        Vector3 targetDirection = targetPosition - transform.position;
+        targetDirection = -targetDirection.normalized;
+        transform.rotation = (Quaternion.LookRotation(targetDirection));
     }
 
     private void FireCannonBall()
@@ -46,12 +55,5 @@ public class Cannon : MonoBehaviour
         //particleSystem.Play();
     }
 
-    private void AimCannonAtMouse() 
-    {
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-        Vector3 targetPosition = ray.GetPoint(4.5f);
-        Vector3 targetDirection = targetPosition - transform.position;
-        targetDirection = -targetDirection.normalized;
-        transform.rotation = (Quaternion.LookRotation(targetDirection));
-    }
+
 }
