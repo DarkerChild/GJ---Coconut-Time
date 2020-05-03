@@ -21,7 +21,6 @@ public class GameController : MonoBehaviour
     CardSetup cardSetup;
     CardHitController cardHitController;
 
-
     public Difficulty currentDifficulty = Difficulty.Easy;
 
     private void Start()

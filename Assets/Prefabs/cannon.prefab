@@ -222,7 +222,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.6784314, b: 0.15686275, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1295,7 +1295,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 0
+    enabled: 1
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -1303,8 +1303,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 1, g: 0.67976063, b: 0.15566039, a: 1}
+        key1: {r: 0.96561664, g: 1, b: 0.051886797, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4765,6 +4765,7 @@ GameObject:
   - component: {fileID: 7421309717271460656}
   - component: {fileID: 7421309717272263440}
   - component: {fileID: 7421309717273360848}
+  - component: {fileID: 5755081131999286806}
   m_Layer: 0
   m_Name: barrel
   m_TagString: Untagged
@@ -4834,6 +4835,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5755081131999286806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7421309717271095056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80a748a026286a242bbef90641c07f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannonBallTemplate: {fileID: 573328515681272995, guid: 9318d9b1ae052e143900dc5cc744fb5d,
+    type: 3}
+  cannonFireingForce: 1000
+  depthOffset: 10
 --- !u!1 &7421309717271095058
 GameObject:
   m_ObjectHideFlags: 0
@@ -4845,7 +4862,6 @@ GameObject:
   - component: {fileID: 7421309717271460658}
   - component: {fileID: 7421309717272263442}
   - component: {fileID: 7421309717273360850}
-  - component: {fileID: 7912018389116004124}
   m_Layer: 0
   m_Name: cannon
   m_TagString: Untagged
@@ -4916,19 +4932,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &7912018389116004124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7421309717271095058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80a748a026286a242bbef90641c07f42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cannonBallTemplate: {fileID: 573328515681272995, guid: 9318d9b1ae052e143900dc5cc744fb5d,
-    type: 3}
-  cannonFireingForce: 1000
-  depthOffset: 10

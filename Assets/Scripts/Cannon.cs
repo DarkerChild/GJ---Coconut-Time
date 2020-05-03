@@ -6,8 +6,7 @@ public class Cannon : MonoBehaviour
 {
     [SerializeField] GameObject cannonBallTemplate = null;
     [Space]
-    [SerializeField] float cannonFireingForce = 1000f;
-    Vector3 cannonBallFiringPosition;
+    [SerializeField] public float cannonFireingForce = 1000f;
 
     new ParticleSystem particleSystem;
 
@@ -18,7 +17,6 @@ public class Cannon : MonoBehaviour
     private void Start()
     {
         particleSystem = GetComponentInChildren<ParticleSystem>();
-        cannonBallFiringPosition = particleSystem.transform.position;
         camera = Camera.main;
     }
 
@@ -37,16 +35,15 @@ public class Cannon : MonoBehaviour
     private void FireCannonBall()
     {
         GameObject cannonBall = Instantiate(cannonBallTemplate, transform);
-        cannonBall.transform.position = cannonBallFiringPosition;
-        CannonBall cannonBallScript = cannonBall.GetComponent<CannonBall>();
-        cannonBallScript.cannonBallFiringForce = cannonFireingForce;
         cannonBall.SetActive(true);
+        cannonBall.transform.position = particleSystem.transform.position;
+        cannonBall.transform.parent = null;
         Destroy(cannonBall, 2f);
     }
 
     private void PlayParticleFX()
     {
-        particleSystem.Play();
+        //particleSystem.Play();
     }
 
     private void AimCannonAtMouse() 

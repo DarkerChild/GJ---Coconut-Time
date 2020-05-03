@@ -21,7 +21,21 @@ public class Card : MonoBehaviour
     {
         if (cardHitController.areCardHitsAllowed)
         {
-            cardHitController.cardHit(gameObject);
+            //cardHitController.cardHit(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+        if (cardHitController.areCardHitsAllowed)
+        {
+            CannonBall cannonBall = other.GetComponent<CannonBall>();
+            if (cannonBall != null)
+            {
+                cardHitController.cardHit(gameObject);
+            }
+            
         }
     }
 
