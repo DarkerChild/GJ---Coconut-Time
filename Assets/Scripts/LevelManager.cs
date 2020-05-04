@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameStates { Opening, InGame, Credits, Tutorial, GameOver };
-public class GameManager : MonoBehaviour
+public enum GameStates { Opening, Transitioning ,Pairs, Credits, Tutorial, GameOver };
+public class LevelManager : MonoBehaviour
 {
     public GameStates currentGameState;
     CameraController cameraController;
     OpeningController openingController;
-    InGameController inGameController;
+    PairsGame pairsGame;
 
     private void Start()
     {
         currentGameState = GameStates.Opening;
         cameraController = FindObjectOfType<CameraController>();
         openingController = FindObjectOfType<OpeningController>();
-        inGameController = FindObjectOfType<InGameController>();
+        pairsGame = FindObjectOfType<PairsGame>();
     }
 
     public void SetGameState(int index)
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
                 newGameState = GameStates.Opening;
                 break;
             case 1:
-                newGameState = GameStates.InGame;
+                newGameState = GameStates.Pairs;
                 break;
             case 2:
                 newGameState = GameStates.Credits;
@@ -39,11 +39,14 @@ public class GameManager : MonoBehaviour
             case 4:
                 newGameState = GameStates.GameOver;
                 break;
+            case 5:
+                newGameState = GameStates.Transitioning;
+                break;
         }
-        StartCoroutine(GoToGameState(newGameState));
+        StartCoroutine(CameraMoveToNewGameState(newGameState));
     }
 
-    IEnumerator GoToGameState(GameStates newGameState)
+    IEnumerator CameraMoveToNewGameState(GameStates newGameState)
     {
         currentGameState = newGameState;
         cameraController.GoToGameState(newGameState);
@@ -62,7 +65,7 @@ public class GameManager : MonoBehaviour
             case GameStates.Opening:
                 openingController.SetIsStopping();
                 break;
-            case GameStates.InGame:
+            case GameStates.Pairs:
                 break;
             case GameStates.Credits:
                 break;
@@ -80,8 +83,8 @@ public class GameManager : MonoBehaviour
             case GameStates.Opening:
                 openingController.SetIsStarting();
                 break;
-            case GameStates.InGame:
-                inGameController.SetIsStarting();
+            case GameStates.Pairs:
+                pairsGame.PairsGamePreGameSetup();
                 break;
             case GameStates.Credits:
                 break;

@@ -12,9 +12,12 @@ public class Card : MonoBehaviour
 
     CardHitController cardHitController;
 
+    BoxCollider boxCollider;
+
     private void Start()
     {
         cardHitController = FindObjectOfType<CardHitController>();
+        boxCollider = GetComponent<BoxCollider>();
     }
 
     private void OnMouseDown()
@@ -39,4 +42,9 @@ public class Card : MonoBehaviour
         }
     }
 
+    public void IsHit(bool isActive)
+    {
+        isHit = isActive;
+        boxCollider.enabled = !isActive;
+    }
 }

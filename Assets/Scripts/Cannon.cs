@@ -13,7 +13,6 @@ public class Cannon : MonoBehaviour
     new Camera camera;
     public float depthOffset = 10f;
 
-
     private void Start()
     {
         particleSystem = GetComponentInChildren<ParticleSystem>();
@@ -25,6 +24,7 @@ public class Cannon : MonoBehaviour
     {
         AimCannonAtMouse();
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        //if (Input.GetKeyDown(KeyCode.Space))
         {
             FireCannonBall();
             PlayParticleFX();
@@ -35,7 +35,7 @@ public class Cannon : MonoBehaviour
     {
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         Vector3 targetPosition = ray.GetPoint(4.5f);
-        targetPosition = targetPosition + new Vector3(0f, 0.1f, 0f);
+        targetPosition = targetPosition + new Vector3(0f, 0.2f, 0f);
         Vector3 targetDirection = targetPosition - transform.position;
         targetDirection = -targetDirection.normalized;
         transform.rotation = (Quaternion.LookRotation(targetDirection));
@@ -54,6 +54,4 @@ public class Cannon : MonoBehaviour
     {
         //particleSystem.Play();
     }
-
-
 }

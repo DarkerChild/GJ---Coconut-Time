@@ -6,23 +6,24 @@ public enum Colours { Sand, BlueComplementary, Red, Gold, BlueSplit, TealSplit, 
 
 public class CardSetup : MonoBehaviour
 {
+    [SerializeField] PairsGame pairsGame;
+    [SerializeField] CardHitController cardHitController;
+    [SerializeField] CardMovementController cardMovementController;
+    
+    [Space]
     [SerializeField] float timeToShowCardsOnNewLevel = 0.5f;
     [SerializeField] Dictionary<Colours, Color> colours = new Dictionary<Colours, Color>();
 
     Card[] allCards;
     List<Card> activeCards = new List<Card>();
 
-    InGameController gameController;
-    CardHitController cardHitController;
-    CardMovementController cardMovementController;
+    
 
-    private void Start()
+
+    private void Awake()
     {
-        gameController = FindObjectOfType<InGameController>();
-        cardHitController = FindObjectOfType<CardHitController>();
-        cardMovementController = FindObjectOfType<CardMovementController>();
-        allCards = FindObjectsOfType<Card>();
         SetColours();
+        allCards = FindObjectsOfType<Card>();
     }
 
     public void StartLevel()
@@ -31,7 +32,6 @@ public class CardSetup : MonoBehaviour
         SetActiveCards();
         AssignColours();
         StartCoroutine(ShowCards());
-        
     }
 
     private void SetActiveCards()
@@ -39,7 +39,7 @@ public class CardSetup : MonoBehaviour
         activeCards.Clear();
         foreach (Card card in allCards)
         {
-            switch (gameController.currentDifficulty)
+            switch (pairsGame.currentDifficulty)
             {
                 case Difficulty.Easy:
                     card.gameObject.SetActive(card.cardDiffictulty == Difficulty.Easy);
@@ -77,8 +77,10 @@ public class CardSetup : MonoBehaviour
         }
     }
 
+
     IEnumerator ShowCards()
     {
+        yield return new WaitForSeconds(timeToShowCardsOnNewLevel);
         foreach (Card card in allCards)
         {
             cardMovementController.RotateCard180(card.gameObject);
@@ -90,7 +92,7 @@ public class CardSetup : MonoBehaviour
         }
         yield return new WaitForSeconds(cardMovementController.cardSpinTime);
         cardHitController.areCardHitsAllowed = true;
-        gameController.isTimerActive = true;
+        pairsGame.isTimerActive = true;
     }
 
     private void SetColours()
@@ -109,6 +111,7 @@ public class CardSetup : MonoBehaviour
     public IEnumerator GameEndCardShowAndReset()
     {
         yield return new WaitForSeconds(timeToShowCardsOnNewLevel);
+        //Turn all hit card to face player. (Inactive ones too)
         foreach (Card card in allCards)
         {
             if (card.GetComponent<Card>().isHit == false)
@@ -117,17 +120,19 @@ public class CardSetup : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(timeToShowCardsOnNewLevel);
+        //Make all cards go away
+        foreach (Card card in allCards)
+        {
+            card.gameObject.SetActive(false);
+        }
+        //Turn all cards back around away from the player
         foreach (Card card in allCards)
         {
             cardMovementController.RotateCard180(card.gameObject);
             card.GetComponent<Card>().isHit = false;
         }
-        yield return new WaitForSeconds(timeToShowCardsOnNewLevel);
-        foreach (Card card in allCards)
-        {
-            card.gameObject.SetActive(true);
-        }
+
         cardHitController.ResetVariables();
-        gameController.SetButtonsActive(true);
+        pairsGame.PairsGamePreGameSetup();
     }
 }

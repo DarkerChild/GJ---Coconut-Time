@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
     GameObject openingObject;
     GameObject gameObject;
     GameObject creditsObject;
-    GameManager gameState;
+    LevelManager gameState;
 
     Dictionary<GameStates, Transform> stateTransforms = new Dictionary<GameStates, Transform>();
 
@@ -40,13 +40,13 @@ public class CameraController : MonoBehaviour
         openingObject = transform.Find("Opening Position").gameObject;
         gameObject = transform.Find("Game Position").gameObject;
         creditsObject = transform.Find("Credits Position").gameObject;
-        gameState = FindObjectOfType<GameManager>();
+        gameState = FindObjectOfType<LevelManager>();
     }
 
     private void PopulateTransformDictionary()
     {
         stateTransforms.Add(GameStates.Opening, openingObject.transform);
-        stateTransforms.Add(GameStates.InGame, gameObject.transform);
+        stateTransforms.Add(GameStates.Pairs, gameObject.transform);
         stateTransforms.Add(GameStates.Credits, creditsObject.transform);
     }
 
@@ -88,7 +88,6 @@ public class CameraController : MonoBehaviour
             camera.transform.position = Vector3.Lerp(currentPosition, targetPosition, howCloseToTarget);
             camera.transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, howCloseToTarget);
             camera.GetComponent<Camera>().fieldOfView = currentFOV + (howCloseToTarget * FOVDiff);
-            print(howCloseToTarget);
             yield return 0;
         }        
         isTransitioning = false;

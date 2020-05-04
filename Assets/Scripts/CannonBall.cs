@@ -14,11 +14,17 @@ public class CannonBall : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         Vector3 firingDirection = Quaternion.Euler(transform.rotation.eulerAngles) * Vector3.back;
         rigidbody.AddForce(firingDirection * cannon.cannonFireingForce);
+        //Debug.Break();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         Collider collider = GetComponent<SphereCollider>();
-        collider.enabled = false;
+        Card card = other.GetComponent<Card>();
+        if (card != null)
+        {
+            collider.enabled = false;
+        }
     }
 }
+ 

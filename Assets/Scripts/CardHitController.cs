@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardHitController : MonoBehaviour
 {
-    [SerializeField] InGameController gameController;
+    [SerializeField] PairsGame pairsGame;
     [SerializeField] CardSetup cardSetup;
     [SerializeField] CardMovementController cardMovementController;
     [Space]
@@ -21,7 +21,7 @@ public class CardHitController : MonoBehaviour
 
     public void cardHit(GameObject card)
     {
-        if (gameController.isGameActive)
+        if (pairsGame.isGameActive)
         {
             if (oneCardHit)
             {
@@ -39,7 +39,7 @@ public class CardHitController : MonoBehaviour
         oneCardHit = true;
         firstCardObject = card;
         firstCardNumber = card.GetComponent<Card>().cardValue;
-        card.GetComponent<Card>().isHit=true;
+        card.GetComponent<Card>().IsHit(true);
         cardMovementController.RotateCard180(card);
     }
 
@@ -50,7 +50,7 @@ public class CardHitController : MonoBehaviour
             areCardHitsAllowed = false;
             secondCardObject = card;
             secondCardNumber = card.GetComponent<Card>().cardValue;
-            card.GetComponent<Card>().isHit = true;
+            card.GetComponent<Card>().IsHit(true);
 
             bool matchingpair = (firstCardNumber == secondCardNumber && firstCardObject != secondCardObject);
             StartCoroutine(PairMatched(matchingpair));
@@ -62,11 +62,11 @@ public class CardHitController : MonoBehaviour
         cardMovementController.RotateCard180(secondCardObject);
         if (correct)
         {
-            gameController.TimeGained(timeGainedForPair);
+            pairsGame.TimeGained(timeGainedForPair);
         }
         else
         {
-            gameController.TimeGained(-timeGainedForPair);
+            pairsGame.TimeGained(-timeGainedForPair);
         }
         yield return new WaitForSeconds(cardShowTime);
 
@@ -113,12 +113,12 @@ public class CardHitController : MonoBehaviour
     public void MoveToNextLevel()
     {
         areCardHitsAllowed = false;
-        StartCoroutine(gameController.MoveToNextLevel());
+        StartCoroutine(pairsGame.MoveToNextLevel());
     }
 
     public void ResetCard(GameObject card)
     {
-        card.GetComponent<Card>().isHit = false;
+        card.GetComponent<Card>().IsHit(false);
         cardMovementController.RotateCard180(card);
     }
 

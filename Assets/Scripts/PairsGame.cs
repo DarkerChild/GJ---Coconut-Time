@@ -4,60 +4,77 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum Difficulty { Easy, Medium, Hard };
+public enum Game { Pairs };
 
-public class InGameController : MonoBehaviour
+public class PairsGame : MonoBehaviour
 {
-    
+    [SerializeField] CardSetup cardSetup;
+    [SerializeField] CardHitController cardHitController;
+    [SerializeField] LevelManager levelManager;
+    [SerializeField] GameObject inGameCanvas = null;
+    [SerializeField] Cannon cannonScript;
+    [SerializeField] GameObject planksGroup;
+    [Space]
+    [SerializeField] GameObject timerTextObject;
     [SerializeField] Text timerText;
     [Space]
-    [SerializeField] int startingTime;
-    [SerializeField] float gameStartDelay;
+    [SerializeField] int startingTime = 20;
+    [SerializeField] float gameStartDelay = 0.5f;
     
     public bool isGameActive = false;
     public bool isTimerActive = false;
 
     public int currentLevel = 0;
     private int timeRemaining;
-    CardSetup cardSetup;
-    CardHitController cardHitController;
-    GameManager gameState;
-    [SerializeField] GameObject inGameCanvas = null;
 
     public Difficulty currentDifficulty = Difficulty.Easy;
 
-    private void Start()
-    {
-        gameState = FindObjectOfType<GameManager>();
-        cardSetup = FindObjectOfType<CardSetup>();
-        cardHitController = FindObjectOfType<CardHitController>();
-    }
-
-    public void SetIsStarting()
+    public void PairsGamePreGameSetup()
     {
         inGameCanvas.SetActive(true);
+        SetButtonsActive(true);
+        SetPlanksActive(true);
+        cannonScript.enabled = true;
     }
 
-    public void StartNewGame(int difficulty)
+    public void SetButtonsActive(bool isActive)
     {
-        switch (difficulty)
+        Button[] buttons = FindObjectsOfType<Button>();
+
+        foreach (Button button in buttons)
         {
-            case 0:
-                currentDifficulty = Difficulty.Easy;
-                break;
-            case 1:
-                currentDifficulty = Difficulty.Medium;
-                break;
-            case 2:
-                currentDifficulty = Difficulty.Hard;
-                break;
+            button.interactable = isActive;
         }
+    }
+
+    public void StartNewGameEasy()
+    {
+        currentDifficulty = Difficulty.Easy;
+        StartGameActions();
+    }
+    public void StartNewGameMedium()
+    {
+        currentDifficulty = Difficulty.Medium;
+        StartGameActions();
+    }
+    public void StartNewGameHard()
+    {
+        currentDifficulty = Difficulty.Hard;
+        StartGameActions();
+    }
+
+    private void StartGameActions()
+    {
         SetButtonsActive(false);
         StopAllCoroutines();
-        StartCoroutine(SetGameActive());
+        StartCoroutine(StartGameTimer());
+        SetPlanksActive(false);
+        cardSetup.gameObject.SetActive(true);
+        timerTextObject.SetActive(true);
         cardSetup.StartLevel();
     }
 
-    IEnumerator SetGameActive()
+    IEnumerator StartGameTimer()
     {
         isGameActive = true;
         currentLevel = 1;
@@ -78,6 +95,12 @@ public class InGameController : MonoBehaviour
             }
             while (!isTimerActive) yield return new WaitForSeconds(1f);
         }
+    }
+
+
+    private void SetPlanksActive(bool isActive)
+    {
+        planksGroup.SetActive(isActive);
     }
 
     public void TimeGained(int timeGained)
@@ -116,13 +139,8 @@ public class InGameController : MonoBehaviour
         cardSetup.StartLevel();
     }
 
-    public void SetButtonsActive(bool isActive)
+    public void SetCannonActive(bool isActive)
     {
-        Button[] buttons = FindObjectsOfType<Button>();
-
-        foreach (Button button in buttons)
-        {
-            button.interactable = isActive;
-        }
+        cannonScript.enabled = isActive;
     }
 }

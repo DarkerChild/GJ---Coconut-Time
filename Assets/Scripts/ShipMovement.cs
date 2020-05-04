@@ -11,7 +11,7 @@ public class ShipMovement : MonoBehaviour
 
     private void Start()
     {
-        spinAmount = -(360f / shipRotationTime * Time.deltaTime);
+        spinAmount = (360f / shipRotationTime * Time.deltaTime);
     }
 
     void Update()
