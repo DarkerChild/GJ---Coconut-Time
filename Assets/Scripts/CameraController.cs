@@ -31,6 +31,7 @@ public class CameraController : MonoBehaviour
     {
         camera.transform.position = openingObject.transform.position;
         camera.transform.rotation = openingObject.transform.rotation;
+        camera.GetComponent<Camera>().fieldOfView = openingObject.transform.localScale.z;
         PopulateTransformDictionary();
         SetInitialValues();
         StartCoroutine(OpeningStateCameraAction());

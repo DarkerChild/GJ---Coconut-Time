@@ -11,6 +11,7 @@ public class CardSetup : MonoBehaviour
     [SerializeField] CardMovementController cardMovementController;
     
     [Space]
+    [SerializeField] float timeBeforeShowCardsOnNewLevel = 0.5f;
     [SerializeField] float timeToShowCardsOnNewLevel = 0.5f;
     [SerializeField] Dictionary<Colours, Color> colours = new Dictionary<Colours, Color>();
 
@@ -115,7 +116,7 @@ public class CardSetup : MonoBehaviour
     IEnumerator ShowCards()
     {
         pairsGame.isTimerActive = false;
-        yield return new WaitForSeconds(timeToShowCardsOnNewLevel);
+        yield return new WaitForSeconds(timeBeforeShowCardsOnNewLevel);
         foreach (Card card in allCards)
         {
             cardMovementController.RotateCard180(card.gameObject);

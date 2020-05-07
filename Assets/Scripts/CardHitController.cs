@@ -52,14 +52,20 @@ public class CardHitController : MonoBehaviour
             secondCardNumber = card.GetComponent<Card>().cardValue;
             card.GetComponent<Card>().IsHit(true);
 
-            bool matchingpair = (firstCardNumber == secondCardNumber && firstCardObject != secondCardObject);
-            StartCoroutine(PairMatched(matchingpair));
+            bool matchingPair = (firstCardNumber == secondCardNumber && firstCardObject != secondCardObject);
+            StartCoroutine(PairMatched(matchingPair, firstCardObject, secondCardObject));
+            firstCardNumber = -1;
+            firstCardObject = null;
+            secondCardNumber = -1;
+            secondCardObject = null;
+            oneCardHit = false;
+            areCardHitsAllowed = true;
         }
     }
 
-    IEnumerator PairMatched(bool correct)
+    IEnumerator PairMatched(bool correct, GameObject card1, GameObject card2)
     {
-        cardMovementController.RotateCard180(secondCardObject);
+        cardMovementController.RotateCard180(card2);
         if (correct)
         {
             pairsGame.TimeGained(timeGainedForPair);
@@ -72,19 +78,12 @@ public class CardHitController : MonoBehaviour
 
         if (correct)
         {
-            secondCardObject.SetActive(false);
-            firstCardObject.SetActive(false);
+            card1.SetActive(false); 
+            card2.SetActive(false);
         }
 
-        oneCardHit = false;
-        areCardHitsAllowed = true;
-        ResetCard(firstCardObject);
-        firstCardNumber = -1;
-        firstCardObject = null;
-
-        ResetCard(secondCardObject);
-        secondCardNumber = -1;
-        secondCardObject = null;
+        StartCoroutine(ResetCard(card1));
+        StartCoroutine(ResetCard(card2));
 
         if (correct)
         {
@@ -116,10 +115,12 @@ public class CardHitController : MonoBehaviour
         StartCoroutine(pairsGame.MoveToNextLevel());
     }
 
-    public void ResetCard(GameObject card)
+    IEnumerator ResetCard(GameObject card)
     {
-        card.GetComponent<Card>().IsHit(false);
+
         cardMovementController.RotateCard180(card);
+        yield return new WaitForSeconds(cardMovementController.cardSpinTime);
+        card.GetComponent<Card>().IsHit(false);
     }
 
     public void ResetVariables()

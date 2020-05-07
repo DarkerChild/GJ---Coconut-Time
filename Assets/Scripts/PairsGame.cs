@@ -34,7 +34,7 @@ public class PairsGame : MonoBehaviour
         inGameCanvas.SetActive(true);
         SetButtonsActive(true);
         SetPlanksActive(true);
-        cannonScript.enabled = true;
+        SetCannonActive(true);
     }
 
     public void SetButtonsActive(bool isActive)
