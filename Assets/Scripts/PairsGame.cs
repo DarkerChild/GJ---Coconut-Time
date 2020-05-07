@@ -67,19 +67,19 @@ public class PairsGame : MonoBehaviour
     {
         SetButtonsActive(false);
         StopAllCoroutines();
-        StartCoroutine(StartGameTimer());
+        timeRemaining = startingTime;
+        timerText.text = timeRemaining.ToString();
+        isGameActive = true;
+        currentLevel = 1;
         SetPlanksActive(false);
         cardSetup.gameObject.SetActive(true);
         timerTextObject.SetActive(true);
         cardSetup.StartLevel();
+        StartCoroutine(StartGameTimer());
     }
 
     IEnumerator StartGameTimer()
     {
-        isGameActive = true;
-        currentLevel = 1;
-        timeRemaining = startingTime;
-        timerText.text = timeRemaining.ToString();
         yield return new WaitForSeconds(gameStartDelay);
         
         while (isGameActive)

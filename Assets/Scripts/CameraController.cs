@@ -11,36 +11,29 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] float cameraTransitionTime = 3f;
 
-    GameObject camera;
-    GameObject openingObject;
-    GameObject gameObject;
-    GameObject creditsObject;
-    LevelManager gameState;
+    [SerializeField] GameObject camera;
+    [SerializeField] GameObject openingObject;
+    [SerializeField] GameObject gameObject;
+    [SerializeField] GameObject creditsObject;
+    [SerializeField] LevelManager levelManager;
+
+
+    [SerializeField] bool isTransitioning = false; //TODO make private
 
     Dictionary<GameStates, Transform> stateTransforms = new Dictionary<GameStates, Transform>();
 
     bool startTransitioning = false;
-    [SerializeField] bool isTransitioning = false; //TODO make private
-
     float openingCameraRotationAmount;
 
 
 
     void Start()
     {
-        FindChildPositionObjects();
+        camera.transform.position = openingObject.transform.position;
+        camera.transform.rotation = openingObject.transform.rotation;
         PopulateTransformDictionary();
         SetInitialValues();
         StartCoroutine(OpeningStateCameraAction());
-    }
-
-    private void FindChildPositionObjects()
-    {
-        camera = transform.Find("Camera").gameObject;
-        openingObject = transform.Find("Opening Position").gameObject;
-        gameObject = transform.Find("Game Position").gameObject;
-        creditsObject = transform.Find("Credits Position").gameObject;
-        gameState = FindObjectOfType<LevelManager>();
     }
 
     private void PopulateTransformDictionary()
@@ -55,23 +48,18 @@ public class CameraController : MonoBehaviour
         openingCameraRotationAmount = (360f / openingCameraRotationTime * Time.deltaTime);
     }
 
-    IEnumerator OpeningStateCameraAction()
+    public IEnumerator OpeningStateCameraAction()
     {
-        while (!isTransitioning)
+        while (levelManager.currentGameState == GameStates.Opening)
         {
             camera.transform.RotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, -1f, 0f), openingCameraRotationAmount);
             yield return 0;
         }
     }
-
-    public void GoToGameState(GameStates newGameState)
+    
+    public IEnumerator TransitionToNewState(GameStates newGameState)
     {
         isTransitioning = true;
-        StartCoroutine(TransitionToNewState(newGameState));
-    }
-    
-    IEnumerator TransitionToNewState(GameStates newGameState)
-    {
         Transform targetTransform = stateTransforms[newGameState];
         Vector3 targetPosition = targetTransform.position;
         Quaternion targetRotation = targetTransform.rotation;

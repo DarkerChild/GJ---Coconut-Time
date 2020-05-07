@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpeningController : MonoBehaviour
+public class Opening : MonoBehaviour
 {
     private bool isStopping = false;
     private bool isStarting = false;
 
-    GameObject openingCanvas;
-
-    private void Start()
-    {
-        openingCanvas = GameObject.Find("Opening Canvas");
-    }
+    [SerializeField] GameObject openingCanvas;
 
     public void SetIsStopping()
     {

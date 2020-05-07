@@ -7,14 +7,14 @@ public class LevelManager : MonoBehaviour
 {
     public GameStates currentGameState;
     CameraController cameraController;
-    OpeningController openingController;
+    Opening openingController;
     PairsGame pairsGame;
 
     private void Start()
     {
         currentGameState = GameStates.Opening;
         cameraController = FindObjectOfType<CameraController>();
-        openingController = FindObjectOfType<OpeningController>();
+        openingController = FindObjectOfType<Opening>();
         pairsGame = FindObjectOfType<PairsGame>();
     }
 
@@ -49,7 +49,7 @@ public class LevelManager : MonoBehaviour
     IEnumerator CameraMoveToNewGameState(GameStates newGameState)
     {
         currentGameState = newGameState;
-        cameraController.GoToGameState(newGameState);
+        StartCoroutine(cameraController.TransitionToNewState(newGameState));
         while (cameraController.GetIsTransitioning())
         {
             yield return 0;

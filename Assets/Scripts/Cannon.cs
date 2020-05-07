@@ -35,7 +35,7 @@ public class Cannon : MonoBehaviour
     {
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         Vector3 targetPosition = ray.GetPoint(4.5f);
-        targetPosition = targetPosition + new Vector3(0f, 0.2f, 0f);
+        targetPosition = targetPosition + new Vector3(0f, 0.1f, 0f);
         Vector3 targetDirection = targetPosition - transform.position;
         targetDirection = -targetDirection.normalized;
         transform.rotation = (Quaternion.LookRotation(targetDirection));
@@ -45,8 +45,12 @@ public class Cannon : MonoBehaviour
     {
         GameObject cannonBall = Instantiate(cannonBallTemplate, transform);
         cannonBall.SetActive(true);
+        cannonBall.transform.localScale = new Vector3(1f, 1f, 0.5f);
         cannonBall.transform.position = particleSystem.transform.position;
         cannonBall.transform.parent = null;
+        Vector3 firingDirection = Quaternion.Euler(cannonBall.transform.rotation.eulerAngles) * Vector3.back;
+        Rigidbody rigidbody = cannonBall.GetComponent<Rigidbody>();
+        rigidbody.AddForce(firingDirection * cannonFireingForce);
         Destroy(cannonBall, 2f);
     }
 

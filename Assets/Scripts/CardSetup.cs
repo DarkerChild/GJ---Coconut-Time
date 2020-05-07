@@ -14,12 +14,14 @@ public class CardSetup : MonoBehaviour
     [SerializeField] float timeToShowCardsOnNewLevel = 0.5f;
     [SerializeField] Dictionary<Colours, Color> colours = new Dictionary<Colours, Color>();
 
+    [Space]
+    [SerializeField] Sprite[] timeSprites;
+
     Card[] allCards;
     List<Card> activeCards = new List<Card>();
+    List<Sprite> unusedSprites = new List<Sprite>();
 
     
-
-
     private void Awake()
     {
         SetColours();
@@ -30,7 +32,7 @@ public class CardSetup : MonoBehaviour
     {
         cardHitController.areCardHitsAllowed = false;
         SetActiveCards();
-        AssignColours();
+        AssignSprites();
         StartCoroutine(ShowCards());
     }
 
@@ -52,6 +54,38 @@ public class CardSetup : MonoBehaviour
                     break;
             }
             if (card.gameObject.activeInHierarchy) { activeCards.Add(card); }
+        }
+    }
+
+    public void AssignSprites()
+    {
+        Card chosenCard;
+        unusedSprites.Clear();
+        foreach (Sprite sprite in timeSprites)
+        {
+            unusedSprites.Add(sprite);
+        }
+        int i = 0;
+        while (activeCards.Count > 0)
+        {
+            print("AC count: " + activeCards.Count);
+            int newValue = Random.Range(0, unusedSprites.Count);
+            print("Unused Sprites count: " + unusedSprites.Count);
+            print("newValue: " + newValue);
+            print("Sprite Name: " + unusedSprites[newValue].name);
+            chosenCard = activeCards[Random.Range(0, activeCards.Count)];  //Pick one of the cards at random
+            chosenCard.cardValue = i;
+            chosenCard.transform.GetComponentInChildren<SpriteRenderer>().sprite = unusedSprites[newValue];
+            activeCards.Remove(chosenCard);
+
+            chosenCard = activeCards[Random.Range(0, activeCards.Count)];  //Pick one of the cards at random
+            chosenCard.cardValue = i;
+            chosenCard.transform.GetComponentInChildren<SpriteRenderer>().sprite = unusedSprites[newValue];
+            activeCards.Remove(chosenCard);
+
+            unusedSprites.RemoveAt(newValue);
+            i++;
+            
         }
     }
 
@@ -80,6 +114,7 @@ public class CardSetup : MonoBehaviour
 
     IEnumerator ShowCards()
     {
+        pairsGame.isTimerActive = false;
         yield return new WaitForSeconds(timeToShowCardsOnNewLevel);
         foreach (Card card in allCards)
         {
