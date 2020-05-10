@@ -69,11 +69,7 @@ public class CardSetup : MonoBehaviour
         int i = 0;
         while (activeCards.Count > 0)
         {
-            print("AC count: " + activeCards.Count);
             int newValue = Random.Range(0, unusedSprites.Count);
-            print("Unused Sprites count: " + unusedSprites.Count);
-            print("newValue: " + newValue);
-            print("Sprite Name: " + unusedSprites[newValue].name);
             chosenCard = activeCards[Random.Range(0, activeCards.Count)];  //Pick one of the cards at random
             chosenCard.cardValue = i;
             chosenCard.transform.GetComponentInChildren<SpriteRenderer>().sprite = unusedSprites[newValue];

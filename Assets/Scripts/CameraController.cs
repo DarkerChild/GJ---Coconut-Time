@@ -11,9 +11,10 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] float cameraTransitionTime = 3f;
 
-    [SerializeField] GameObject camera;
+    [SerializeField] new GameObject camera;
     [SerializeField] GameObject openingObject;
-    [SerializeField] GameObject gameObject;
+    [SerializeField] GameObject pairsObject;
+    [SerializeField] GameObject makingTimeObject;
     [SerializeField] GameObject creditsObject;
     [SerializeField] LevelManager levelManager;
 
@@ -24,8 +25,6 @@ public class CameraController : MonoBehaviour
 
     bool startTransitioning = false;
     float openingCameraRotationAmount;
-
-
 
     void Start()
     {
@@ -40,8 +39,9 @@ public class CameraController : MonoBehaviour
     private void PopulateTransformDictionary()
     {
         stateTransforms.Add(GameStates.Opening, openingObject.transform);
-        stateTransforms.Add(GameStates.Pairs, gameObject.transform);
+        stateTransforms.Add(GameStates.Pairs, pairsObject.transform);
         stateTransforms.Add(GameStates.Credits, creditsObject.transform);
+        stateTransforms.Add(GameStates.MakingTime, makingTimeObject.transform);
     }
 
     private void SetInitialValues()

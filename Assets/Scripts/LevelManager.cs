@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameStates { Opening, Transitioning ,Pairs, Credits, Tutorial, GameOver };
+public enum GameStates { Opening, Transitioning ,Pairs, MakingTime,Credits, Tutorial, GameOver };
 public class LevelManager : MonoBehaviour
 {
     public GameStates currentGameState;
     CameraController cameraController;
     Opening openingController;
     PairsGame pairsGame;
+    MakingTime makingTime;
 
     private void Start()
     {
@@ -16,6 +17,7 @@ public class LevelManager : MonoBehaviour
         cameraController = FindObjectOfType<CameraController>();
         openingController = FindObjectOfType<Opening>();
         pairsGame = FindObjectOfType<PairsGame>();
+        makingTime = FindObjectOfType<MakingTime>();
     }
 
     public void SetGameState(int index)
@@ -41,6 +43,9 @@ public class LevelManager : MonoBehaviour
                 break;
             case 5:
                 newGameState = GameStates.Transitioning;
+                break;
+            case 6:
+                newGameState = GameStates.MakingTime;
                 break;
         }
         StartCoroutine(CameraMoveToNewGameState(newGameState));
@@ -85,6 +90,9 @@ public class LevelManager : MonoBehaviour
                 break;
             case GameStates.Pairs:
                 pairsGame.PairsGamePreGameSetup();
+                break;
+            case GameStates.MakingTime:
+                makingTime.StartGame();
                 break;
             case GameStates.Credits:
                 break;

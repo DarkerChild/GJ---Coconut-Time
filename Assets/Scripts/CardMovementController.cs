@@ -9,7 +9,6 @@ public class CardMovementController : MonoBehaviour
     public void RotateCard180(GameObject card)
     {
         Transform cardTransform = card.transform;
-        Quaternion endRot = Quaternion.LookRotation(-cardTransform.forward);
         StartCoroutine(RotateCardSmoothly(card, 180f));
     }
 
