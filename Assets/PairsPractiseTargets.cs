@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TargetType { wine, glass1, glass2, glass3 }
 public class PairsPractiseTargets : MonoBehaviour
 {
+    [SerializeField] public TargetType type;
     Vector3 startPosition;
     Vector3 startRotation;
 
@@ -13,17 +15,34 @@ public class PairsPractiseTargets : MonoBehaviour
 
     private void Start()
     {
-        controller = FindObjectOfType<PractiseTargetController>();
+        FindController();
         startPosition = transform.position;
         startRotation = transform.rotation.eulerAngles;
+    }
+
+    private void FindController()
+    {
+        controller = FindObjectOfType<PractiseTargetController>();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (!isHit)
         {
-            isHit = true;
-            controller.TargetHit();
+            CannonBall cannonBall = collision.gameObject.GetComponent<CannonBall>();
+            PairsPractiseTargets otherTarget = collision.gameObject.GetComponent<PairsPractiseTargets>();
+            if (cannonBall != null || otherTarget!=null)
+            {
+                isHit = true;
+                if (controller != null)
+                {
+                    controller.TargetHit();
+                }
+                else
+                {
+                    FindController();
+                }
+            }
         }
     }
 

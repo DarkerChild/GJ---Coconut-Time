@@ -49,6 +49,7 @@ public class Cannon : MonoBehaviour
         Vector3 targetPosition = ray.GetPoint(4.5f) + new Vector3 (0f,0.3f,0f);
         Vector3 targetDirection = targetPosition - cannonBall.transform.position;
         targetDirection = -targetDirection.normalized;
+        cannonBall.transform.LookAt(targetPosition);
 
         Rigidbody rigidbody = cannonBall.GetComponent<Rigidbody>();
         rigidbody.AddForce(-targetDirection * cannonFireingForce);

@@ -8,15 +8,16 @@ public enum Game { Pairs };
 
 public class PairsGame : MonoBehaviour
 {
-    [SerializeField] CardSetup cardSetup;
-    [SerializeField] CardHitController cardHitController;
-    [SerializeField] LevelManager levelManager;
+    [SerializeField] CardSetup cardSetup = null;
+    [SerializeField] CardHitController cardHitController = null;
+    [SerializeField] LevelManager levelManager = null;
     [SerializeField] GameObject inGameCanvas = null;
-    [SerializeField] Cannon cannonScript;
-    [SerializeField] GameObject planksGroup;
+    [SerializeField] Cannon cannonScript = null;
+    [SerializeField] GameObject planksGroup = null;
+    [SerializeField] PractiseTargetController practiseTargetController = null;
     [Space]
-    [SerializeField] GameObject timerTextObject;
-    [SerializeField] Text timerText;
+    [SerializeField] GameObject timerTextObject = null;
+    [SerializeField] Text timerText = null;
     [Space]
     [SerializeField] int startingTime = 20;
     [SerializeField] float gameStartDelay = 0.5f;
@@ -66,6 +67,7 @@ public class PairsGame : MonoBehaviour
     private void StartGameActions()
     {
         SetButtonsActive(false);
+        practiseTargetController.DestroyAllTargets();
         StopAllCoroutines();
         timeRemaining = startingTime;
         timerText.text = timeRemaining.ToString();

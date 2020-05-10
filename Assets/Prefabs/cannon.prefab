@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cannonBallTemplate: {fileID: 573328515681272995, guid: 9318d9b1ae052e143900dc5cc744fb5d,
     type: 3}
-  cannonFireingForce: 1000
+  cannonFireingForce: 10000
   depthOffset: 10
 --- !u!1 &7421309717271095058
 GameObject:

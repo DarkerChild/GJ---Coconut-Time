@@ -11,11 +11,9 @@ GameObject:
   - component: {fileID: 57059001642370778}
   - component: {fileID: 50030489817533776}
   - component: {fileID: 41998332963590418}
-  - component: {fileID: 4974831532381554493}
   - component: {fileID: 1521528513267776048}
-  - component: {fileID: 3605099634407721011}
   - component: {fileID: 55313276488437854}
-  - component: {fileID: 7121556795152523728}
+  - component: {fileID: 2767692281456124179}
   m_Layer: 0
   m_Name: Drink_01
   m_TagString: Untagged
@@ -84,20 +82,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &4974831532381554493
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56029602778944916}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 6931062aeecbb13438f7ad92ef798679, type: 3}
 --- !u!54 &1521528513267776048
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -114,20 +98,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!64 &3605099634407721011
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56029602778944916}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 6931062aeecbb13438f7ad92ef798679, type: 3}
 --- !u!114 &55313276488437854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,9 +110,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e08c24541ba8d54b86109617c20f469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 1
   isHit: 0
---- !u!65 &7121556795152523728
-BoxCollider:
+--- !u!136 &2767692281456124179
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -151,6 +122,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.066143185, y: 0.09214661, z: 0.14}
-  m_Center: {x: 0.0000003054738, y: 0.046073306, z: -0.05}
+  m_Radius: 0.03
+  m_Height: 0.13
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.065, z: 0}

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 23000010733369234}
   - component: {fileID: 5030140122597712317}
   - component: {fileID: 1574304107837496496}
-  - component: {fileID: 3657873038547938995}
   - component: {fileID: 1821865694}
   m_Layer: 0
   m_Name: Drink_01
@@ -113,20 +112,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!64 &3657873038547938995
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000013650473748}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 6931062aeecbb13438f7ad92ef798679, type: 3}
 --- !u!114 &1821865694
 MonoBehaviour:
   m_ObjectHideFlags: 0
