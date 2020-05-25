@@ -21,7 +21,11 @@ public class PairsGame : MonoBehaviour
     [Space]
     [SerializeField] int startingTime = 20;
     [SerializeField] float gameStartDelay = 0.5f;
-    
+    [Space]
+    [SerializeField] GameObject openHowToPlay = null;
+    [SerializeField] GameObject closeHowToPlay = null;
+    [SerializeField] GameObject howToPlayText = null;
+
     public bool isGameActive = false;
     public bool isTimerActive = false;
 
@@ -144,5 +148,29 @@ public class PairsGame : MonoBehaviour
     public void SetCannonActive(bool isActive)
     {
         cannonScript.enabled = isActive;
+    }
+
+    public void ReturnToMenu()
+    {
+        levelManager.SetGameState(0);
+    }
+
+    public void SetIsStopping()
+    {
+        inGameCanvas.SetActive(false);
+    }
+
+    public void OpenHowToPlay()
+    {
+        openHowToPlay.SetActive(false);
+        howToPlayText.SetActive(true);
+        closeHowToPlay.SetActive(true);
+    }
+
+    public void CloseHowToPlay()
+    {
+        openHowToPlay.SetActive(true);
+        howToPlayText.SetActive(false);
+        closeHowToPlay.SetActive(false);
     }
 }

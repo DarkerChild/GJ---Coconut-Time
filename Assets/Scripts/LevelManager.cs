@@ -5,19 +5,28 @@ using UnityEngine;
 public enum GameStates { Opening, Transitioning ,Pairs, MakingTime,Credits, Tutorial, GameOver };
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField] Texture2D mouseCursor;
     public GameStates currentGameState;
     CameraController cameraController;
     Opening openingController;
     PairsGame pairsGame;
     MakingTime makingTime;
+    CreditsController creditsController;
+
+    Vector2 mouseOffset = new Vector2(256f,256f);
+    
 
     private void Start()
     {
+        Cursor.SetCursor(mouseCursor, mouseOffset, CursorMode.Auto);
         currentGameState = GameStates.Opening;
         cameraController = FindObjectOfType<CameraController>();
         openingController = FindObjectOfType<Opening>();
         pairsGame = FindObjectOfType<PairsGame>();
         makingTime = FindObjectOfType<MakingTime>();
+        creditsController = FindObjectOfType<CreditsController>();
+
+        pairsGame.SetIsStopping();
     }
 
     public void SetGameState(int index)
@@ -48,10 +57,10 @@ public class LevelManager : MonoBehaviour
                 newGameState = GameStates.MakingTime;
                 break;
         }
-        StartCoroutine(CameraMoveToNewGameState(newGameState));
+        StartCoroutine(MoveToNewGameState(newGameState));
     }
 
-    IEnumerator CameraMoveToNewGameState(GameStates newGameState)
+    IEnumerator MoveToNewGameState(GameStates newGameState)
     {
         currentGameState = newGameState;
         StartCoroutine(cameraController.TransitionToNewState(newGameState));
@@ -71,8 +80,10 @@ public class LevelManager : MonoBehaviour
                 openingController.SetIsStopping();
                 break;
             case GameStates.Pairs:
+                pairsGame.SetIsStopping();
                 break;
             case GameStates.Credits:
+                creditsController.SetIsStopping();
                 break;
             case GameStates.Tutorial:
                 break;
@@ -95,6 +106,7 @@ public class LevelManager : MonoBehaviour
                 makingTime.StartGame();
                 break;
             case GameStates.Credits:
+                creditsController.SetIsStarting();
                 break;
             case GameStates.Tutorial:
                 break;

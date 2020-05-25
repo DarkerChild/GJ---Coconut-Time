@@ -12,33 +12,26 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject makingTimeCanvas;
     [Space]
     [SerializeField] GameObject openingPlayButton;
-    [SerializeField] GameObject openingPlayPairsButton;
+    [SerializeField] GameObject openingCreditsButton;
     [SerializeField] GameObject openingPlayFindingTimeButton;
 
 
     void Start()
     {
         levelManager = FindObjectOfType<LevelManager>();
-        InitiaSetup();
+        InitialSetup();
     }
 
-    private void InitiaSetup()
+    public void InitialSetup()
     {
         openingCanvas.SetActive(true);
         pairsCanvas.SetActive(false);
         makingTimeCanvas.SetActive(false);
         openingPlayButton.SetActive(true);
-        openingPlayPairsButton.SetActive(false);
+        openingCreditsButton.SetActive(true);
     }
 
     public void OpeningPlayButtonPressed()
-    {
-        openingPlayButton.SetActive(false);
-        openingPlayPairsButton.SetActive(true);
-        openingPlayFindingTimeButton.SetActive(true);
-    }
-
-    public void OpeningPlayPairsButtonPressed()
     {
         openingCanvas.SetActive(false);
         levelManager.SetGameState(1);
@@ -48,6 +41,12 @@ public class UIController : MonoBehaviour
     {
         openingCanvas.SetActive(false);
         levelManager.SetGameState(6);
+    }
+
+    public void OpeningCreditsButtonPressed()
+    {
+        openingCanvas.SetActive(false);
+        levelManager.SetGameState(2);
     }
 }
 

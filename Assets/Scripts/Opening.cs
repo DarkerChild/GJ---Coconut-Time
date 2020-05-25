@@ -8,6 +8,8 @@ public class Opening : MonoBehaviour
     private bool isStarting = false;
 
     [SerializeField] GameObject openingCanvas;
+    [SerializeField] UIController uiController;
+    [SerializeField] CameraController cameraController;
 
     public void SetIsStopping()
     {
@@ -24,7 +26,9 @@ public class Opening : MonoBehaviour
 
     public void SetIsStarting()
     {
-
+        openingCanvas.SetActive(true);
+        uiController.InitialSetup();
+        StartCoroutine(cameraController.OpeningStateCameraAction());
     }
 
     public bool GetIsStopoping()
