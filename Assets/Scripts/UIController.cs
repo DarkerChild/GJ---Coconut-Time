@@ -48,5 +48,10 @@ public class UIController : MonoBehaviour
         openingCanvas.SetActive(false);
         levelManager.SetGameState(2);
     }
+
+    public void QuitApplication()
+    {
+        Application.Quit();
+    }
 }
 
